@@ -1,0 +1,14 @@
+{
+  "database-url-var": "DATABASE_URL",
+  "migrations-table": "pgmigrations",
+  "dir": "migrations",
+  "direction": "up",
+  "count": 999,
+  "migration-file-language": "js",
+  "create-schema": true,
+  "single-transaction": true,
+  "check-order": true,
+  "decamelize": false,
+  "timestamp": true,
+  "ignore-pattern": "\\..*"
+}
