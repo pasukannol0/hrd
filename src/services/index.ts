@@ -4,3 +4,6 @@ export * from './beacon-proximity.service';
 export * from './nfc-verifier.service';
 export * from './qr-token-generator.service';
 export * from './face-recognition';
+export * from './policy-evaluator.service';
+export * from './policy-loader.middleware';
+export * from './policy-admin.service';
