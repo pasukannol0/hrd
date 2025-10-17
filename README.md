@@ -20,10 +20,12 @@ This repository contains the database schema, migration framework, and presence 
 - **NFC Verifier**: NFC tag verification with location validation
 - **QR Token Generator**: HMAC-based dynamic QR codes with 30-60s TTL
 - **Face Recognition**: Pluggable face recognition with liveness detection and mock adapter
+- **Policy Engine**: Multi-factor policy evaluation with Redis-backed ETag caching and audit trail
 
 ## Prerequisites
 
 - PostgreSQL 12+ with PostGIS extension
+- Redis 6+ (for policy engine caching)
 - Node.js 16+
 - npm or yarn
 
