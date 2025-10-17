@@ -1,0 +1,29 @@
+{
+  "name": "attendance-system",
+  "version": "1.0.0",
+  "description": "Attendance management system with geolocation tracking",
+  "main": "index.js",
+  "scripts": {
+    "migrate:up": "node-pg-migrate up",
+    "migrate:down": "node-pg-migrate down",
+    "migrate:create": "node-pg-migrate create",
+    "migrate:status": "node-pg-migrate status",
+    "db:seed": "node scripts/seed.js"
+  },
+  "keywords": [
+    "attendance",
+    "postgis",
+    "geolocation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-pg-migrate": "^7.6.1",
+    "pg": "^8.12.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "@types/pg": "^8.11.6"
+  }
+}

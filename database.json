@@ -1,0 +1,40 @@
+{
+  "dev": {
+    "driver": "pg",
+    "host": {
+      "ENV": "PGHOST"
+    },
+    "port": {
+      "ENV": "PGPORT"
+    },
+    "database": {
+      "ENV": "PGDATABASE"
+    },
+    "user": {
+      "ENV": "PGUSER"
+    },
+    "password": {
+      "ENV": "PGPASSWORD"
+    },
+    "schema": "public"
+  },
+  "production": {
+    "driver": "pg",
+    "host": {
+      "ENV": "PGHOST"
+    },
+    "port": {
+      "ENV": "PGPORT"
+    },
+    "database": {
+      "ENV": "PGDATABASE"
+    },
+    "user": {
+      "ENV": "PGUSER"
+    },
+    "password": {
+      "ENV": "PGPASSWORD"
+    },
+    "schema": "public"
+  }
+}
