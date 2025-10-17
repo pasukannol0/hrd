@@ -7,3 +7,4 @@ export * from './face-recognition';
 export * from './policy-evaluator.service';
 export * from './policy-loader.middleware';
 export * from './policy-admin.service';
+export * from './device-integrity';

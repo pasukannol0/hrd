@@ -20,6 +20,7 @@ This repository contains the database schema, migration framework, and presence 
 - **NFC Verifier**: NFC tag verification with location validation
 - **QR Token Generator**: HMAC-based dynamic QR codes with 30-60s TTL
 - **Face Recognition**: Pluggable face recognition with liveness detection and mock adapter
+- **Device Integrity Middleware**: Unified attestation verification with root/jailbreak detection, device binding, and integrity metrics
 - **Policy Engine**: Multi-factor policy evaluation with Redis-backed ETag caching and audit trail
 
 ## Prerequisites
@@ -61,6 +62,17 @@ npm run build
 ```bash
 npm run db:seed
 ```
+
+### Integrity Mode Configuration
+
+Set the `INTEGRITY_MODE` environment variable to select the attestation provider for device integrity verification:
+
+- `play_integrity` (default)
+- `app_attest`
+- `device_check`
+- `mock` (development/testing only)
+
+> **Security Note:** `INTEGRITY_MODE=mock` is automatically blocked in production unless `allowMockModeInProduction` is explicitly enabled when configuring the middleware.
 
 ## Quick Start
 

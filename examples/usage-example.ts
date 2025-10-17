@@ -17,6 +17,8 @@ import {
   QrTokenGeneratorService,
   FaceRecognitionService,
   MockFaceRecognitionAdapter,
+  DeviceIntegrityMiddleware,
+  IntegrityProviderType,
 } from '../src';
 
 async function main() {
@@ -158,7 +160,37 @@ async function main() {
 
   console.log(`\nVerification score: ${verificationScore}/6`);
 
-  console.log('\n=== Example 8: Policy-Based Verification ===');
+  console.log('\n=== Example 8: Device Integrity (Mock Mode) ===');
+  const integrityMiddleware = new DeviceIntegrityMiddleware({
+    mode: IntegrityProviderType.MOCK,
+    environment: 'development',
+  });
+
+  const integrityContext = await integrityMiddleware.verify({
+    provider: IntegrityProviderType.MOCK,
+    payload: {
+      type: IntegrityProviderType.MOCK,
+      deviceId: 'device-123',
+      devicePublicKey: 'mock-public-key',
+      nonce: 'sample-nonce',
+      valid: true,
+      integrityLevel: 'STRONG',
+      claims: {
+        attestation: 'mock',
+      },
+    },
+    expectedNonce: 'sample-nonce',
+    userId: 'user-uuid',
+    deviceId: 'device-123',
+    devicePublicKey: 'mock-public-key',
+    rootSignals: {
+      rooted: false,
+    },
+  });
+
+  console.log('Device integrity context:', JSON.stringify(integrityContext, null, 2));
+
+  console.log('\n=== Example 9: Policy-Based Verification ===');
   const officeId = geoResult.office_id;
 
   if (officeId) {
