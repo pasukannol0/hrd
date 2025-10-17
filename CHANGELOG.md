@@ -5,6 +5,89 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2024-10-17
+
+### Added
+
+#### Service Layer & Repositories
+- **Repository Layer** with PostGIS query support and caching:
+  - `OfficeRepository` - Office data access with geographic queries
+  - `NetworkRepository` - Wi-Fi network data access with SSID/BSSID matching
+  - `BeaconRepository` - Beacon data access with proximity queries
+  - `NfcTagRepository` - NFC tag data access with location-based queries
+  - `PolicyRepository` - Policy data access with priority ordering
+  - `BaseRepository` - Abstract base class with caching and transaction support
+
+- **Presence Validation Services**:
+  - `GeoValidatorService` - Location validation using PostGIS ST_DWithin and ST_Contains
+    - Configurable distance tolerance (default: 100m)
+    - Boundary containment checking
+    - Nearest office detection
+  - `WiFiMatcherService` - Wi-Fi network matching
+    - BSSID (MAC address) exact matching
+    - SSID-based matching with fallback
+    - Office association
+  - `BeaconProximityService` - Bluetooth beacon detection
+    - iBeacon format support (UUID, major, minor)
+    - RSSI-based distance estimation
+    - Proximity threshold validation (default: 50m)
+    - Geographic proximity using PostGIS
+  - `NfcVerifierService` - NFC tag verification
+    - Tag UID validation
+    - Location-based verification with distance checking
+    - Nearby tag discovery
+  - `QrTokenGeneratorService` - Dynamic QR code generation
+    - HMAC-SHA256 signature
+    - Configurable TTL (30-60 seconds)
+    - Base64url encoded tokens
+    - Nonce for replay prevention
+  - `FaceRecognitionService` - Pluggable face recognition with liveness detection
+    - Provider abstraction for multiple backends
+    - Automatic liveness detection
+    - Confidence threshold validation
+    - Timeout protection
+    - Face enrollment and deletion
+
+- **Adapters & Utilities**:
+  - `MockFaceRecognitionAdapter` - Mock face recognition for testing
+    - Configurable success/error rates
+    - Simulated delays
+    - In-memory face storage
+    - Test user support
+  - `InMemoryCache` - Simple in-memory caching implementation
+    - TTL support
+    - Automatic cleanup
+    - Async interface
+
+- **TypeScript Type Definitions**:
+  - Complete type definitions for all models
+  - Provider interfaces for pluggable components
+  - Result types for validation operations
+  - Error enums for face recognition
+
+#### Documentation
+- `src/README.md` - Comprehensive service layer documentation
+- `examples/usage-example.ts` - Complete usage examples
+- Updated main README with service layer information
+- TypeScript configuration with strict mode
+
+#### Build System
+- TypeScript compilation with source maps
+- Type declaration generation
+- Build and watch scripts
+
+### Changed
+- Updated `package.json` to include TypeScript build scripts
+- Enhanced main README with Quick Start guide
+- Updated project structure documentation
+
+### Technical Details
+- **Caching Strategy**: 300s TTL for most queries, 600s for aggregate queries
+- **PostGIS Functions**: ST_Contains, ST_DWithin, ST_Distance for geographic operations
+- **Coordinate System**: SRID 4326 (WGS 84)
+- **HMAC Algorithm**: SHA-256 for QR token signatures
+- **Distance Estimation**: Path loss model for beacon RSSI calculations
+
 ## [1.0.0] - 2024-01-15
 
 ### Added

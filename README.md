@@ -1,15 +1,25 @@
-# Attendance Management System - Database Schema
+# Attendance Management System - Database Schema & Services
 
-This repository contains the database schema and migration framework for an attendance management system with geolocation tracking capabilities using PostGIS.
+This repository contains the database schema, migration framework, and presence factor services for an attendance management system with geolocation tracking capabilities using PostGIS.
 
 ## Features
 
+### Database & Schema
 - **PostGIS Integration**: Geographic data types for office boundaries, check-in/out locations
 - **Comprehensive Schema**: Tables for users, devices, offices, beacons, NFC tags, attendance, leaves, and audit logs
 - **Integrity Verification**: JSONB field for storing integrity check results and cryptographic signatures
 - **Materialized Views**: Pre-computed reporting views for daily, weekly, and monthly attendance summaries
 - **Zero-Downtime Migrations**: Expand/backfill/contract pattern for production deployments
 - **Audit Trail**: Complete audit logging for all critical operations
+
+### Services & Repositories
+- **Repository Layer**: Data access with PostGIS queries and caching support
+- **Geo Validator**: Location validation using ST_DWithin/ST_Contains with configurable distance tolerance
+- **Wi-Fi Matcher**: BSSID/SSID matching for network-based presence verification
+- **Beacon Proximity**: Bluetooth beacon detection with RSSI-based distance estimation
+- **NFC Verifier**: NFC tag verification with location validation
+- **QR Token Generator**: HMAC-based dynamic QR codes with 30-60s TTL
+- **Face Recognition**: Pluggable face recognition with liveness detection and mock adapter
 
 ## Prerequisites
 
@@ -38,11 +48,52 @@ cp .env.example .env
 npm run migrate:up
 ```
 
-4. Seed baseline data (optional):
+4. Build the TypeScript services:
+
+```bash
+npm run build
+```
+
+5. Seed baseline data (optional):
 
 ```bash
 npm run db:seed
 ```
+
+## Quick Start
+
+### Using the Services
+
+```typescript
+import { Pool } from 'pg';
+import {
+  InMemoryCache,
+  OfficeRepository,
+  GeoValidatorService,
+  WiFiMatcherService,
+  QrTokenGeneratorService,
+} from 'attendance-system';
+
+// Initialize
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const cache = new InMemoryCache();
+const officeRepo = new OfficeRepository({ pool, cache });
+
+// Geo validation
+const geoValidator = new GeoValidatorService({
+  officeRepository: officeRepo,
+  defaultDistanceTolerance: 100,
+});
+
+const result = await geoValidator.validateLocation({
+  latitude: 37.7749,
+  longitude: -122.4194,
+});
+
+console.log(result); // { valid: true, distance_meters: 45.2, ... }
+```
+
+See [src/README.md](src/README.md) and [examples/usage-example.ts](examples/usage-example.ts) for comprehensive usage examples.
 
 ## Database Schema
 
