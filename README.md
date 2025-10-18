@@ -21,6 +21,7 @@ This repository contains the database schema, migration framework, and presence 
 - **QR Token Generator**: HMAC-based dynamic QR codes with 30-60s TTL
 - **Face Recognition**: Pluggable face recognition with liveness detection and mock adapter
 - **Policy Engine**: Multi-factor policy evaluation with Redis-backed ETag caching and audit trail
+- **Attendance Submission Workflow**: Complete orchestration with rate limiting, device binding, motion guard, integrity checks, cryptographic signatures, and Prometheus metrics
 
 ## Prerequisites
 
