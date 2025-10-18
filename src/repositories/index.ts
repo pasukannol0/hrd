@@ -5,3 +5,5 @@ export * from './beacon.repository';
 export * from './nfc-tag.repository';
 export * from './policy.repository';
 export * from './attendance.repository';
+export * from './reporting.repository';
+export * from './export-request.repository';

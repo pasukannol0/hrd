@@ -5,6 +5,116 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2024-10-18
+
+### Added
+
+#### Reporting APIs & Export Services
+- **ReportingRepository** - Query materialized views with pagination and filtering:
+  - `getDailyAttendanceSummary()` - Daily attendance records per user and office
+  - `getWeeklyAttendanceSummary()` - Weekly attendance aggregations
+  - `getMonthlyAttendanceSummary()` - Monthly attendance reports with work hours
+  - `getOfficeOccupancySummary()` - Hourly occupancy statistics per office
+  - `refreshMaterializedView()` - Concurrent refresh support for materialized views
+  - Support for date range, office, user, and department filtering
+  - Pagination with page, limit, total, and total_pages
+
+- **CsvExportService** - CSV export generation:
+  - Streaming writer for memory-efficient large dataset exports
+  - Timezone-aware formatting (Asia/Jakarta by default)
+  - Column headers with human-readable names
+  - Automatic conversion of minutes to hours
+  - Support for all report types (daily, weekly, monthly, occupancy)
+
+- **PdfExportService** - PDF export generation:
+  - Template-based PDF generation using PDFKit
+  - Company branding support with configurable company name
+  - Multi-page support with headers and footers
+  - Landscape orientation for wide data tables
+  - Timezone information in footer
+  - Support for all report types with formatted tables
+
+- **SignedUrlService** - Secure download URL generation:
+  - HMAC-SHA256 based signature for tamper-proof URLs
+  - Time-limited access with configurable expiration (default: 1 hour)
+  - User validation for access control
+  - Random nonce for uniqueness and replay protection
+  - Metadata support for additional context
+
+- **ReportAdminService** - Comprehensive report management:
+  - `generateReport()` - Generate exports with signed URLs
+  - `getReportPreview()` - Preview report data before full export
+  - `verifyDownloadAccess()` - Validate signed URLs
+  - `refreshMaterializedViews()` - Refresh all materialized views
+  - `createExportRequest()` - Track export requests in database
+  - `getUserExportHistory()` - Retrieve user's export history
+  - `cleanupExpiredExports()` - Remove expired export records
+  - Metrics tracking for exports (Prometheus integration)
+  - Audit logging for all export operations
+
+- **ExportRequestRepository** - Track and manage export requests:
+  - Create and update export request records
+  - Find requests by ID, file ID, or user ID
+  - Delete expired export records
+  - Database persistence with status tracking
+
+#### Database Migrations
+- **Migration 1000000000014** - `export_requests` table:
+  - Track all export requests with filters and metadata
+  - Store signed URL tokens and expiration
+  - Record generation time and record count
+  - Support for status tracking (pending, processing, completed, failed)
+  - Indexes for efficient querying by user, status, and date
+
+#### Types & Interfaces
+- `ReportType` - Report type enum (daily, weekly, monthly, occupancy)
+- `ExportFormat` - Export format enum (csv, pdf)
+- `ReportFilter` - Filter interface for date range, office, user, department
+- `PaginationParams` - Pagination parameters with page and limit
+- `PaginatedResult<T>` - Paginated result with data and pagination metadata
+- `ExportRequest` - Export request interface
+- `ExportRecord` - Export record from database
+- `SignedUrlOptions` - Signed URL configuration options
+- `ExportMetrics` - Prometheus metrics for exports
+
+#### Prometheus Metrics
+- `export_requests_total` - Total number of export requests
+- `export_requests_csv` - Number of CSV export requests
+- `export_requests_pdf` - Number of PDF export requests
+- `export_requests_completed` - Number of successful exports
+- `export_requests_failed` - Number of failed exports
+
+#### Documentation
+- `docs/REPORTING_APIS.md` - Comprehensive reporting APIs documentation
+  - Architecture overview
+  - Usage examples for all services
+  - Report types and filtering options
+  - Timezone handling (Asia/Jakarta)
+  - Signed URL security details
+  - Performance considerations
+  - Monitoring and audit logging
+  - Maintenance tasks and cron jobs
+  - API integration examples
+
+- `examples/reporting-example.ts` - Complete working example:
+  - CSV and PDF report generation
+  - Report preview functionality
+  - Signed URL verification
+  - Materialized view refresh
+  - Export metrics retrieval
+  - Cleanup of expired exports
+
+### Changed
+- **MetricsService** - Extended with export-related metrics
+- **PrometheusMetrics** interface - Added export metrics fields
+
+### Dependencies
+- Added `csv-stringify@^6.5.0` - CSV generation
+- Added `pdfkit@^0.15.0` - PDF generation
+- Added `@types/pdfkit@^0.13.4` - TypeScript types for PDFKit
+- Added `date-fns@^2.30.0` - Date manipulation
+- Added `date-fns-tz@^2.0.0` - Timezone support
+
 ## [1.1.0] - 2024-10-17
 
 ### Added

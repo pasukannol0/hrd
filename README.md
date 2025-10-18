@@ -23,6 +23,7 @@ This repository contains the database schema, migration framework, and presence 
 - **Device Integrity Middleware**: Unified attestation verification with root/jailbreak detection, device binding, and integrity metrics
 - **Policy Engine**: Multi-factor policy evaluation with Redis-backed ETag caching and audit trail
 - **Attendance Submission Workflow**: Complete orchestration with rate limiting, device binding, motion guard, integrity checks, cryptographic signatures, and Prometheus metrics
+- **Reporting & Export Services**: Query materialized views with pagination/filtering; CSV/PDF export with streaming writers; signed URLs for secure downloads; Asia/Jakarta timezone support; Prometheus metrics and audit logs
 
 ## Prerequisites
 

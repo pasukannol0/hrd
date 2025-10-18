@@ -18,6 +18,11 @@ export class MetricsService {
       rate_limit_blocks_total: 0,
       motion_guard_violations_total: 0,
       device_trust_failures_total: 0,
+      export_requests_total: 0,
+      export_requests_csv: 0,
+      export_requests_pdf: 0,
+      export_requests_completed: 0,
+      export_requests_failed: 0,
     };
   }
 
@@ -80,6 +85,11 @@ export class MetricsService {
       rate_limit_blocks_total: 0,
       motion_guard_violations_total: 0,
       device_trust_failures_total: 0,
+      export_requests_total: 0,
+      export_requests_csv: 0,
+      export_requests_pdf: 0,
+      export_requests_completed: 0,
+      export_requests_failed: 0,
     };
   }
 
@@ -113,6 +123,26 @@ export class MetricsService {
     lines.push('# HELP device_trust_failures_total Total number of device trust failures');
     lines.push('# TYPE device_trust_failures_total counter');
     lines.push(`device_trust_failures_total ${this.metrics.device_trust_failures_total}`);
+    
+    lines.push('# HELP export_requests_total Total number of export requests');
+    lines.push('# TYPE export_requests_total counter');
+    lines.push(`export_requests_total ${this.metrics.export_requests_total}`);
+    
+    lines.push('# HELP export_requests_csv Number of CSV export requests');
+    lines.push('# TYPE export_requests_csv counter');
+    lines.push(`export_requests_csv ${this.metrics.export_requests_csv}`);
+    
+    lines.push('# HELP export_requests_pdf Number of PDF export requests');
+    lines.push('# TYPE export_requests_pdf counter');
+    lines.push(`export_requests_pdf ${this.metrics.export_requests_pdf}`);
+    
+    lines.push('# HELP export_requests_completed Number of completed export requests');
+    lines.push('# TYPE export_requests_completed counter');
+    lines.push(`export_requests_completed ${this.metrics.export_requests_completed}`);
+    
+    lines.push('# HELP export_requests_failed Number of failed export requests');
+    lines.push('# TYPE export_requests_failed counter');
+    lines.push(`export_requests_failed ${this.metrics.export_requests_failed}`);
     
     return lines.join('\n');
   }

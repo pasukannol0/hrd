@@ -129,4 +129,9 @@ export interface PrometheusMetrics {
   rate_limit_blocks_total: number;
   motion_guard_violations_total: number;
   device_trust_failures_total: number;
+  export_requests_total: number;
+  export_requests_csv: number;
+  export_requests_pdf: number;
+  export_requests_completed: number;
+  export_requests_failed: number;
 }
