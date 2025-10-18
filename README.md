@@ -22,6 +22,7 @@ This repository contains the database schema, migration framework, and presence 
 - **Face Recognition**: Pluggable face recognition with liveness detection and mock adapter
 - **Device Integrity Middleware**: Unified attestation verification with root/jailbreak detection, device binding, and integrity metrics
 - **Policy Engine**: Multi-factor policy evaluation with Redis-backed ETag caching and audit trail
+- **Attendance Submission Workflow**: Complete orchestration with rate limiting, device binding, motion guard, integrity checks, cryptographic signatures, and Prometheus metrics
 
 ## Prerequisites
 
