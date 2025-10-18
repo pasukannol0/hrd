@@ -3,3 +3,4 @@ export * from './providers';
 export * from './policy-engine';
 export * from './attendance';
 export * from './device-integrity';
+export * from './leave-management';
