@@ -2,3 +2,4 @@ export * from './models';
 export * from './providers';
 export * from './policy-engine';
 export * from './device-integrity';
+export * from './leave-management';

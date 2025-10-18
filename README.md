@@ -22,6 +22,8 @@ This repository contains the database schema, migration framework, and presence 
 - **Face Recognition**: Pluggable face recognition with liveness detection and mock adapter
 - **Device Integrity Middleware**: Unified attestation verification with root/jailbreak detection, device binding, and integrity metrics
 - **Policy Engine**: Multi-factor policy evaluation with Redis-backed ETag caching and audit trail
+- **Leave Management**: Complete leave management system with approval workflows, REST API, and audit logging
+- **Attendance Anomaly Checker**: Policy integration to respect approved leaves when evaluating attendance
 
 ## Prerequisites
 
@@ -108,6 +110,56 @@ console.log(result); // { valid: true, distance_meters: 45.2, ... }
 ```
 
 See [src/README.md](src/README.md) and [examples/usage-example.ts](examples/usage-example.ts) for comprehensive usage examples.
+
+### Leave Management System
+
+```typescript
+import {
+  LeaveRepository,
+  AuditService,
+  NotificationService,
+  LeaveManagementService,
+  createLeaveApi,
+  LeaveType,
+} from 'attendance-system';
+import express from 'express';
+
+// Initialize services
+const leaveRepository = new LeaveRepository({ pool });
+const auditService = new AuditService({ pool });
+const notificationService = new NotificationService({
+  hooks: {
+    onLeaveApproved: async (event) => {
+      // Send notification
+      console.log('Leave approved:', event.leave_id);
+    },
+  },
+});
+
+const leaveManagementService = new LeaveManagementService({
+  leaveRepository,
+  auditService,
+  notificationService,
+});
+
+// Submit leave request
+const leave = await leaveManagementService.submitLeave({
+  user_id: 'user-uuid',
+  leave_type: LeaveType.CUTI,
+  start_date: new Date('2024-12-25'),
+  end_date: new Date('2024-12-27'),
+  total_days: 3,
+  reason: 'Family vacation',
+});
+
+// Setup REST API
+const app = express();
+app.use(express.json());
+app.use('/api', createLeaveApi({ leaveManagementService }));
+app.listen(3000);
+```
+
+See [docs/LEAVE_MANAGEMENT.md](docs/LEAVE_MANAGEMENT.md) and [examples/leave-management-example.ts](examples/leave-management-example.ts) for detailed documentation.
 
 ## Database Schema
 

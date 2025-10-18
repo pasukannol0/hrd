@@ -5,6 +5,122 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2024-10-18
+
+### Added
+
+#### Leave Management System
+- **Complete leave management module** with approval workflows:
+  - Support for Indonesian leave types: `izin` (permission), `cuti` (vacation), `sakit` (sick leave)
+  - Status workflow: `pending` → `approved`/`rejected`/`cancelled`
+  - Role-based approval actors mapped to roles (admin, manager, employee)
+  - Half-day leave support via `total_days` decimal field
+  - Attachment URLs for supporting documents
+  
+- **LeaveRepository** - Database operations for leave management:
+  - CRUD operations with caching support
+  - Query by user, status, leave type, date range
+  - Overlap detection for leave periods
+  - Approved leave retrieval for attendance integration
+  - Transaction support for atomic updates
+  - Leave balance calculation by type and period
+
+- **LeaveManagementService** - Business logic for leave workflows:
+  - Leave submission with validation
+  - Approval/rejection with role validation
+  - Cancellation with status transition checks
+  - Overlap checking to prevent conflicting leaves
+  - Leave balance tracking by type and year
+  - Audit history retrieval per leave request
+  - Date-based leave status checking
+
+- **AuditService** - Comprehensive audit logging:
+  - Logs all leave state changes to `audit_logs` table
+  - Tracks actor, action, old/new values, metadata
+  - Entity-specific and user-specific audit queries
+  - IP address and user agent tracking support
+  - Generic audit logging for any entity type
+
+- **NotificationService** - Event-driven notification system:
+  - Placeholder hooks for email/push/SMS notifications
+  - Events for all leave actions (submitted, approved, rejected, cancelled)
+  - Extensible hook system for custom integrations
+  - Non-blocking error handling (notifications don't break main flow)
+  - Configurable logging
+
+- **AttendanceAnomalyCheckerService** - Policy integration:
+  - Checks if absences are excused by approved leaves
+  - Respects approved leaves when evaluating attendance anomalies
+  - Multi-day anomaly checking with leave exclusion
+  - Weekend and holiday detection
+  - Leave date extraction for reporting
+
+#### REST API Layer
+- **Leave REST API** with Express.js:
+  - `POST /api/leaves` - Submit leave request
+  - `GET /api/leaves/:id` - Get leave by ID
+  - `GET /api/leaves` - Query leaves with filters (user, status, type, dates)
+  - `POST /api/leaves/:id/approve` - Approve leave
+  - `POST /api/leaves/:id/reject` - Reject leave with reason
+  - `POST /api/leaves/:id/cancel` - Cancel leave
+  - `GET /api/leaves/:id/audit` - Get audit history
+  - `POST /api/leaves/check-overlap` - Check for overlapping leaves
+  - `GET /api/users/:userId/leave-balance` - Get leave balance
+
+- **API Middleware & Error Handling**:
+  - Zod schema validation middleware
+  - Standardized error responses
+  - 404 handler for undefined routes
+  - Development-mode error stack traces
+
+- **Type-safe request/response handling**:
+  - TypeScript interfaces for all API models
+  - Zod runtime validation schemas
+  - Request validation with detailed error messages
+
+#### Types & Validation
+- **Leave Management Types**:
+  - `LeaveType` enum (izin, cuti, sakit)
+  - `LeaveStatus` enum (pending, approved, rejected, cancelled)
+  - `LeaveAction` enum (submit, approve, reject, cancel)
+  - `Leave` interface with all fields
+  - Status transition rules with allowed roles
+  - Event and notification payload types
+
+- **Zod Validation Schemas**:
+  - `CreateLeaveRequestSchema` - Leave submission validation
+  - `ApproveLeaveRequestSchema` - Approval validation
+  - `RejectLeaveRequestSchema` - Rejection with reason
+  - `CancelLeaveRequestSchema` - Cancellation validation
+  - `LeaveQueryParamsSchema` - Query parameter validation
+
+#### Documentation & Examples
+- **Comprehensive documentation** (`docs/LEAVE_MANAGEMENT.md`):
+  - Architecture overview with component descriptions
+  - Complete API endpoint documentation with curl examples
+  - Usage examples for all services
+  - Status transition matrix with role permissions
+  - Notification hook integration guide
+  - Database schema documentation
+  - Error handling patterns
+
+- **Working examples**:
+  - `examples/leave-management-example.ts` - Complete service usage
+  - `examples/simple-leave-test.ts` - Basic test suite
+  - `examples/leave-api-server.ts` - Production-ready API server
+
+### Changed
+- Updated main `README.md` with leave management quick start
+- Added leave management to feature list
+- Exported API layer from main `src/index.ts`
+- Enhanced repository index to include `LeaveRepository`
+- Enhanced services index to include all new services
+
+### Integration
+- **Policy Engine Integration**: Attendance anomaly detection now respects approved leaves
+- **Audit Trail Integration**: All leave actions automatically logged to existing audit system
+- **Database Integration**: Uses existing `leaves` and `audit_logs` tables
+
 ## [1.1.0] - 2024-10-17
 
 ### Added
