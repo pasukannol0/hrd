@@ -222,6 +222,35 @@ Mock implementation for testing and development.
 - Test user lists
 - Error simulation
 
+### DeviceIntegrityMiddleware
+
+Provides unified device attestation verification across Google Play Integrity, Apple App Attest, and Apple DeviceCheck with contextual root detection, binding enforcement, and metrics emission.
+
+**Configuration:**
+- `providers` - Optional list of custom `DeviceIntegrityProvider` implementations
+- `mode` - Overrides the active provider (defaults to `INTEGRITY_MODE` environment variable)
+- `bindingStore` - Custom `DeviceBindingStore` implementation (defaults to in-memory)
+- `rootDetectionAdapters` - Additional `RootDetectionAdapter` instances for advanced signal fusion
+- `metricsEmitter` - Custom `IntegrityMetricsEmitter` for forwarding verification metrics
+- `allowMockModeInProduction` - Explicitly permit mock mode in production (default: false)
+
+**Methods:**
+```typescript
+verify(request: DeviceIntegrityRequest): Promise<DeviceIntegrityContext>
+enrichPolicyContext(context, request): Promise<PolicyEvaluationContext>
+registerProvider(provider: DeviceIntegrityProvider): void
+registerRootDetectionAdapter(adapter: RootDetectionAdapter): void
+```
+
+**Features:**
+- Secure nonce and timestamp validation with provider-specific adapters
+- Root/jailbreak signal fusion with pluggable adapters
+- Device public-key binding with automatic first-use enrollment
+- Console metrics emitter producing structured integrity events
+- Automatic safeguards that prevent `INTEGRITY_MODE=mock` in production environments
+
+> **Environment:** Add `INTEGRITY_MODE=mock` to local `.env` files for development/testing. Production deployments must configure a real provider.
+
 ## Usage Examples
 
 ### Initialize Repositories

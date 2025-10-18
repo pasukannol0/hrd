@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { DeviceIntegrityContext } from './device-integrity';
 
 export enum PresenceMode {
   GEOFENCE = 'geofence',
@@ -99,6 +100,7 @@ export interface PolicyEvaluationContext {
     image_data: Buffer | string;
     user_id_claim?: string;
   };
+  device_integrity?: DeviceIntegrityContext;
 }
 
 export interface FactorEvaluationResult {

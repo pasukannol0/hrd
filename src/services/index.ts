@@ -7,6 +7,8 @@ export * from './face-recognition';
 export * from './policy-evaluator.service';
 export * from './policy-loader.middleware';
 export * from './policy-admin.service';
+
+// Tambahan dari feat-attendance-submission-workflow
 export * from './motion-guard.service';
 export * from './rate-limiter.service';
 export * from './device-binding.service';
@@ -14,3 +16,6 @@ export * from './signature.service';
 export * from './metrics.service';
 export * from './audit-log.service';
 export * from './attendance-submission.service';
+
+// Tambahan dari main branch
+export * from './device-integrity';
