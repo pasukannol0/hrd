@@ -24,6 +24,7 @@ This repository contains the database schema, migration framework, and presence 
 - **Policy Engine**: Multi-factor policy evaluation with Redis-backed ETag caching and audit trail
 - **Leave Management**: Complete leave management system with approval workflows, REST API, and audit logging
 - **Attendance Anomaly Checker**: Policy integration to respect approved leaves when evaluating attendance
+- **Attendance Submission Workflow**: Complete orchestration with rate limiting, device binding, motion guard, integrity checks, cryptographic signatures, and Prometheus metrics
 
 ## Prerequisites
 
